@@ -5,8 +5,8 @@ import java.util.ArrayList;
 //Classe Vértice
 public class Vertice<T> {
     //Inicializando variáveis
-    private T valor;
-    private ArrayList<Aresta> destinos;
+    private final T valor;
+    private final ArrayList<Aresta> destinos;
 
     //Constructor da classe Vertice
     public Vertice(T valor) {
