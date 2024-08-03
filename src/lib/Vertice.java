@@ -14,6 +14,10 @@ public class Vertice<T> {
         this.destinos = new ArrayList<>();
     }
 
+    public void addDestino(Aresta a){
+        this.destinos.add(a);
+    }
+
     //Método getValor para buscar valor do vértice
     public T getValor() {
         return valor;
