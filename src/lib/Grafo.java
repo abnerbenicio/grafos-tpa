@@ -39,6 +39,24 @@ public class Grafo<T> {
         return null;
     }
 
+    public Aresta<T> addAresta(T origem, T destino, float peso){
+        Vertice<T> verticeOrigem, verticeDestino;
+
+        verticeOrigem = findVertice(origem);
+        if (verticeOrigem==null){
+            verticeOrigem = addVertice(origem);
+        }
+
+        verticeDestino = findVertice(destino);
+        if (verticeDestino==null){
+            verticeDestino = addVertice(destino);
+        }
+
+        Aresta<T> novaAresta = new Aresta<>(verticeDestino, peso);
+        verticeOrigem.addDestino(novaAresta);
+        return novaAresta;
+    }
+
     //Método get para buscar os vertices
     public ArrayList<Vertice<T>> getVertices() {
         return vertices;

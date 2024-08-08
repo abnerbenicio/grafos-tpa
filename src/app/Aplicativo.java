@@ -29,8 +29,22 @@ public class Aplicativo {
     }
 
     public void AcrescentarRota () {
-        //Escrever código
-        throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("Digite o nome da cidade de origem: ");
+        Scanner ScanCidadeOrigem = new Scanner(System.in);
+        String nomeCidadeOrigem = ScanCidadeOrigem.nextLine();
+        Cidade cidadeOrigem = cidades.findVertice(new Cidade(nomeCidadeOrigem)).getValor();
+
+        System.out.println("Digite o nome da cidade de destino: ");
+        Scanner ScanCidadeDestino = new Scanner(System.in);
+        String nomeCidadeDestino = ScanCidadeDestino.nextLine();
+        Cidade cidadeDestino = cidades.findVertice(new Cidade(nomeCidadeDestino)).getValor();
+
+        System.out.println("Digite a distância entre as duas cidades: ");
+        Scanner ScanDistancia = new Scanner(System.in);
+        float distancia = ScanDistancia.nextFloat();
+
+        cidades.addAresta(cidadeOrigem, cidadeDestino, distancia);
+
     }
 
     public Grafo<Cidade> CalcAGM () {
