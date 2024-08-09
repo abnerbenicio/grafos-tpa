@@ -2,6 +2,8 @@ package app;
 
 import lib.*;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 //Classe Aplicativo
@@ -17,6 +19,19 @@ public class Aplicativo {
         Scanner cidade = new Scanner(System.in);
         String cidadeNome = cidade.nextLine();
 
+        try {
+            //Tentando adicionar a cidade
+            Cidade cidadeAdd = cidades.addVertice(new Cidade(cidadeNome.toLowerCase())).getValor();
+            //Informando que cidade foi criada
+            System.out.println("A cidade " + cidadeNome + " foi adicionada");
+        } catch (NullPointerException e) {
+            //Informando que cidade já existe
+            System.out.println("A cidade " + cidadeNome + " já foi adicionada no sistema.");
+        }
+    }
+
+    //Método para adicionar cidade usando o arquivo entrada.txt
+    public void AcrescentarCidade (String cidadeNome) {
         try {
             //Tentando adicionar a cidade
             Cidade cidadeAdd = cidades.addVertice(new Cidade(cidadeNome.toLowerCase())).getValor();
@@ -61,6 +76,29 @@ public class Aplicativo {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void LerArquivoEntrada(){
+        try {
+            // Se houver um arquivo entrada.txt, o grafo será inicializado a partir dele.
+            Scanner input = new Scanner(new FileInputStream("entrada.txt"));
+
+            //lendo número de cidades
+            int numeroCidades = Integer.parseInt(input.nextLine());
+
+            //lendo nome das cidades e adicionando Cidades ao grafo
+            for(int i = 0; i < numeroCidades; i++){
+                String cidadeNome = input.nextLine();
+                AcrescentarCidade(cidadeNome);
+            }
+
+
+
+
+        } catch (FileNotFoundException e) {
+            // Caso contrário, vai ler do teclado.
+            System.out.println("Não existe um arquivo de entrada.txt");
+        }
+    }
+
     public void GravarSair () {
         //Escrever código
         throw new UnsupportedOperationException("Not supported yet.");
@@ -69,6 +107,9 @@ public class Aplicativo {
 
     //Método para exibir menu
     public void menu() {
+        //Lendo arquivo entrada.txt, se existir
+        LerArquivoEntrada();
+
         //Exibindo opções
         System.out.println("1 - Acrescentar Cidade");
         System.out.println("2 - Acrescentar Rota");
