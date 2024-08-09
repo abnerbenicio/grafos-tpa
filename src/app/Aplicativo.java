@@ -47,9 +47,8 @@ public class Aplicativo {
 
     }
 
-    public Grafo<Cidade> CalcAGM () {
-        //Escrever código
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void CalcAGM () {
+        cidades.CalcAgmPrim();
     }
 
     public void CalcCaminhoMinimo () {
