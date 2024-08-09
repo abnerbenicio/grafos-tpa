@@ -35,5 +35,9 @@ public class Cidade {
         //Definindo hashCode como igual para cidades com o mesmo nome
         return Objects.hash(nome);
     }
+
+    public String toString() {
+        return nome;
+    }
 }
 
