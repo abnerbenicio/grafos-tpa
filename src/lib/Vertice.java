@@ -27,4 +27,9 @@ public class Vertice<T> {
     public ArrayList<Aresta> getDestinos() {
         return destinos;
     }
+
+    @Override
+    public String toString() {
+        return valor.toString(); //valor é uma Cidade, retorna o toString() da Cidade
+    }
 }
