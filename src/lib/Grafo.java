@@ -54,9 +54,12 @@ public class Grafo<T> {
             verticeDestino = this.addVertice(destino);
         }
 
-        Aresta<T> novaAresta = new Aresta<>(verticeDestino, peso);
-        verticeOrigem.addDestino(novaAresta);
-        return novaAresta;
+        Aresta<T> novaArestaOrigemDestino = new Aresta<>(verticeDestino, peso);
+        verticeOrigem.addDestino(novaArestaOrigemDestino);
+
+        Aresta<T> novaArestaDestinoOrigem = new Aresta<>(verticeOrigem, peso);
+        verticeDestino.addDestino(novaArestaDestinoOrigem);
+        return novaArestaOrigemDestino;
     }
 
     //Método get para buscar os vertices
