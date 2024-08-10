@@ -4,7 +4,9 @@ import lib.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 //Classe Aplicativo
 public class Aplicativo {
@@ -73,11 +75,18 @@ public class Aplicativo {
     public void CalcAGM () {
         Grafo<Cidade> agm = cidades.CalcAgmPrim();
         double somaTotalPesos = 0.0;
+        Set<Aresta> arestasConsideradas = new HashSet<>();
         System.out.println("Arestas da Árvore Geradora Mínima:");
         for (Vertice<Cidade> vertice : agm.getVertices()) {
             for (Aresta aresta : vertice.getDestinos()) {
+                Aresta arestaInvertida = new Aresta(vertice, aresta.getPeso());
+                if(arestasConsideradas.contains(arestaInvertida)){
+                    continue;
+                }
                 System.out.println(vertice.getValor().toString() + " - " + aresta.getDestino().getValor().toString() + " : " + aresta.getPeso());
                 somaTotalPesos += aresta.getPeso();
+
+                arestasConsideradas.add(aresta);
             }
         }
         System.out.println("Soma total dos pesos: " + somaTotalPesos);
@@ -254,3 +263,4 @@ public class Aplicativo {
         }
     }
 }
+
