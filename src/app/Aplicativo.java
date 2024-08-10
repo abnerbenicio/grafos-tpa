@@ -151,21 +151,24 @@ public class Aplicativo {
 
             //Escrever Matriz de Adjacências
             boolean caminhoEncontrado = false;
-            for (Vertice vertice : grafoImprimir.getVertices()){
-                for (Vertice verticeVerificarAdjacencia : grafoImprimir.getVertices()){
-                    for(Aresta arestaDestinoEPeso : (ArrayList<Aresta>) vertice.getDestinos()){
-                        if(arestaDestinoEPeso.getDestino().equals(verticeVerificarAdjacencia)){
-                            b.write(arestaDestinoEPeso.getPeso() + ",");
+            for (Vertice vertice : grafoImprimir.getVertices()) {
+                StringBuilder linha = new StringBuilder();
+                for (Vertice verticeVerificarAdjacencia : grafoImprimir.getVertices()) {
+                    for (Aresta arestaDestinoEPeso : (ArrayList<Aresta>) vertice.getDestinos()) {
+                        if (arestaDestinoEPeso.getDestino().equals(verticeVerificarAdjacencia)) {
+                            linha.append(arestaDestinoEPeso.getPeso()).append(",");
                             caminhoEncontrado = true;
                             break;
                         }
                     }
-                    if (!caminhoEncontrado){
-                        b.write("0.0,");
+                    if (!caminhoEncontrado) {
+                        linha.append("0.0,");
                     }
                     caminhoEncontrado = false;
                 }
-                b.write("\n");
+                // Remover a última vírgula
+                linha.setLength(linha.length() - 1);
+                b.write(linha.toString() + "\n");
             }
 
             b.close();
