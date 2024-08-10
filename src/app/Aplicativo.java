@@ -2,8 +2,8 @@ package app;
 
 import lib.*;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 //Classe Aplicativo
@@ -113,9 +113,9 @@ public class Aplicativo {
 
                 //lê a distância entre uma Cidade e cada uma das outras
                 for (int i = 0; i < listaAdjacencias.length; i++){
-                    int distancia = Integer.parseInt(listaAdjacencias[i]);
+                    float distancia = Float.parseFloat(listaAdjacencias[i]);
                     //Se há um caminho
-                    if(distancia != 0){
+                    if(distancia != 0.0){
 
                         String nomeCidadeOrigem = cidade.toString();
                         String nomeCidadeDestino = this.cidades.getVertices().get(i).toString();
@@ -134,9 +134,53 @@ public class Aplicativo {
         }
     }
 
+    public void EscreverGrafoEmArquivo(Grafo<Cidade> grafoImprimir, String caminhoNomeArquivoGrafo){
+        try{
+
+            FileWriter f = new FileWriter(caminhoNomeArquivoGrafo);
+            BufferedWriter b = new BufferedWriter(f);
+
+            //Ecrever número de Cidades
+            int numeroCidades = grafoImprimir.getVertices().size();
+            b.write(numeroCidades + "\n");
+
+            //Escrever Nome das Cidades
+            for (Vertice vertice : grafoImprimir.getVertices()){
+                b.write(vertice.toString() + "\n");
+            }
+
+            //Escrever Matriz de Adjacências
+            boolean caminhoEncontrado = false;
+            for (Vertice vertice : grafoImprimir.getVertices()){
+                for (Vertice verticeVerificarAdjacencia : grafoImprimir.getVertices()){
+                    for(Aresta arestaDestinoEPeso : (ArrayList<Aresta>) vertice.getDestinos()){
+                        if(arestaDestinoEPeso.getDestino().equals(verticeVerificarAdjacencia)){
+                            b.write(arestaDestinoEPeso.getPeso() + ",");
+                            caminhoEncontrado = true;
+                            break;
+                        }
+                    }
+                    if (!caminhoEncontrado){
+                        b.write("0.0,");
+                    }
+                    caminhoEncontrado = false;
+                }
+                b.write("\n");
+            }
+
+            b.close();
+        }
+        catch (IOException e) {
+            System.out.println("ERRO! Não foi possível escrever o arquivo.");
+        }
+
+    }
+
     public void GravarSair () {
-        //Escrever código
-        throw new UnsupportedOperationException("Not supported yet.");
+        //Escrever Arquivo com Grafo Completo
+        EscreverGrafoEmArquivo(this.cidades, "grafocompleto.txt");
+        //Escrever Arquivo com Árvore Geradora Mínima
+        EscreverGrafoEmArquivo(this.cidades.CalcAgmPrim(), "agm.txt");
     }
 
 
