@@ -79,7 +79,7 @@ public class Grafo<T> {
         Set<Vertice<T>> visitados = new HashSet<>();
 
         // Escolhe o primeiro vértice como origem
-        Vertice<T> verticeOrigem = vertices.getFirst();
+        Vertice<T> verticeOrigem = vertices.get(0); // Usando get(0) em vez de getFirst()
         visitados.add(verticeOrigem);
 
         // Adiciona as arestas do vértice de origem na fila de prioridade e armazena a origem
@@ -116,6 +116,7 @@ public class Grafo<T> {
         return agm;
     }
 
+
     // Método auxiliar para encontrar o vértice de origem dado uma aresta
     private Vertice<T> findVerticeComAresta(Aresta<T> aresta) {
         for (Vertice<T> vertice : vertices) {
@@ -124,5 +125,77 @@ public class Grafo<T> {
             }
         }
         return null;
+    }
+
+    public void calcCaminhoMinimo(T origem, T destino) {
+        // Buscar os vértices correspondentes aos objetos
+        Vertice<T> verticeOrigem = findVertice(origem);
+        Vertice<T> verticeDestino = findVertice(destino);
+
+        // Verifica se o destino ou a origem existem
+        if (verticeOrigem == null || verticeDestino == null) {
+            System.out.println("Origem ou destino não encontrados no grafo.");
+            return;
+        }
+
+        // Inicializar o algoritmo de Dijkstra
+        Map<Vertice<T>, Float> distancias = new HashMap<>();
+        Map<Vertice<T>, Vertice<T>> antecessores = new HashMap<>();
+        PriorityQueue<Vertice<T>> filaPrioridade = new PriorityQueue<>(Comparator.comparing(distancias::get));
+
+        // Configurar a distância inicial
+        for (Vertice<T> vertice : vertices) {
+            if (vertice.equals(verticeOrigem)) {
+                distancias.put(vertice, 0f);
+            } else {
+                distancias.put(vertice, Float.MAX_VALUE);
+            }
+            filaPrioridade.add(vertice);
+        }
+
+        // Executar o algoritmo
+        while (!filaPrioridade.isEmpty()) {
+            Vertice<T> atual = filaPrioridade.poll();
+
+            // Se chegamos ao destino, não há necessidade de continuar
+            if (atual.equals(verticeDestino)) {
+                break;
+            }
+
+            // Atualizar as distâncias para os vizinhos
+            for (Aresta<T> aresta : atual.getDestinos()) {
+                Vertice<T> vizinho = aresta.getDestino();
+                float novaDistancia = distancias.get(atual) + aresta.getPeso();
+
+                if (novaDistancia < distancias.get(vizinho)) {
+                    filaPrioridade.remove(vizinho); // Necessário para atualizar a fila de prioridade
+                    distancias.put(vizinho, novaDistancia);
+                    antecessores.put(vizinho, atual);
+                    filaPrioridade.add(vizinho);
+                }
+            }
+        }
+
+        // Construir o caminho de volta a partir do destino
+        List<Vertice<T>> caminho = new ArrayList<>();
+        Vertice<T> atual = verticeDestino;
+        while (atual != null) {
+            caminho.add(atual);
+            atual = antecessores.get(atual);
+        }
+
+        // Inverter o caminho para que ele comece na origem
+        Collections.reverse(caminho);
+
+        // Imprimir o caminho percorrido e a distância total
+        if (caminho.get(0).equals(verticeOrigem)) {
+            System.out.println("Caminho mínimo de " + origem + " a " + destino + ":");
+            for (Vertice<T> vertice : caminho) {
+                System.out.print(vertice.getValor() + " ");
+            }
+            System.out.println("\nDistância total: " + distancias.get(verticeDestino));
+        } else {
+            System.out.println("Não há caminho entre " + origem + " e " + destino + ".");
+        }
     }
 }

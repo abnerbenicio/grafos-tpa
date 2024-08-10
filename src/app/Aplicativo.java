@@ -92,9 +92,27 @@ public class Aplicativo {
         System.out.println("Soma total dos pesos: " + somaTotalPesos);
     }
 
-    public void CalcCaminhoMinimo () {
-        //Escrever código
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void CalcCaminhoMinimo() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Solicitar nome da cidade de origem
+        System.out.println("Digite o nome da cidade de origem: ");
+        String nomeCidadeOrigem = scanner.nextLine();
+        Cidade cidadeOrigem = cidades.findVertice(new Cidade(nomeCidadeOrigem)).getValor();
+
+        // Solicitar nome da cidade de destino
+        System.out.println("Digite o nome da cidade de destino: ");
+        String nomeCidadeDestino = scanner.nextLine();
+        Cidade cidadeDestino = cidades.findVertice(new Cidade(nomeCidadeDestino)).getValor();
+
+        // Verificar se as cidades existem
+        if (cidadeOrigem == null || cidadeDestino == null) {
+            System.out.println("Uma ou ambas as cidades não foram encontradas no grafo.");
+            return;
+        }
+
+        // Chamar o método de cálculo do caminho mínimo
+        cidades.calcCaminhoMinimo(cidadeOrigem, cidadeDestino);
     }
 
     public void CalcCaminhoMinimoAGM () {
