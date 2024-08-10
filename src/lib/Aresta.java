@@ -1,5 +1,7 @@
 package lib;
 
+import java.util.Objects;
+
 //Classe Aresta
 public class Aresta<T> {
     //Inicialização de variáveis
@@ -20,5 +22,19 @@ public class Aresta<T> {
     //Método getDestino para retornar destino
     public Vertice<T> getDestino() {
         return destino;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Aresta aresta = (Aresta) obj;
+        return Double.compare(aresta.peso, peso) == 0 &&
+                Objects.equals(destino, aresta.destino);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash( destino, peso);
     }
 }
