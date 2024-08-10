@@ -71,7 +71,16 @@ public class Aplicativo {
     }
 
     public void CalcAGM () {
-        cidades.CalcAgmPrim();
+        Grafo<Cidade> agm = cidades.CalcAgmPrim();
+        double somaTotalPesos = 0.0;
+        System.out.println("Arestas da Árvore Geradora Mínima:");
+        for (Vertice<Cidade> vertice : agm.getVertices()) {
+            for (Aresta aresta : vertice.getDestinos()) {
+                System.out.println(vertice.getValor().toString() + " - " + aresta.getDestino().getValor().toString() + " : " + aresta.getPeso());
+                somaTotalPesos += aresta.getPeso();
+            }
+        }
+        System.out.println("Soma total dos pesos: " + somaTotalPesos);
     }
 
     public void CalcCaminhoMinimo () {

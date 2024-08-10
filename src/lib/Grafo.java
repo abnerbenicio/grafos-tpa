@@ -70,18 +70,19 @@ public class Grafo<T> {
             return null;
         }
 
-        Grafo<T> agm = new Grafo<T>();
+        Grafo<T> agm = new Grafo<>();
         PriorityQueue<Aresta<T>> filaPrioridade = new PriorityQueue<>(Comparator.comparingDouble(Aresta::getPeso));
+        Map<Vertice<T>, Vertice<T>> origemMap = new HashMap<>();
         Set<Vertice<T>> visitados = new HashSet<>();
-        double somaTotalPesos = 0.0;
 
         // Escolhe o primeiro vértice como origem
         Vertice<T> verticeOrigem = vertices.getFirst();
-
-        // Adiciona as arestas do vértice de origem na fila de prioridade
         visitados.add(verticeOrigem);
+
+        // Adiciona as arestas do vértice de origem na fila de prioridade e armazena a origem
         for (Aresta<T> aresta : verticeOrigem.getDestinos()) {
             filaPrioridade.add(aresta);
+            origemMap.put(aresta.getDestino(), verticeOrigem);
         }
 
         while (!filaPrioridade.isEmpty()) {
@@ -93,25 +94,21 @@ public class Grafo<T> {
                 continue; // Pula para a próxima aresta
             }
 
+            // Recupera a origem correta usando o mapa
+            Vertice<T> origem = origemMap.get(destino);
+
             // Adiciona a aresta atual na AGM e marca o destino como visitado
-            agm.addAresta(verticeOrigem.getValor(), arestaAtual.getDestino().getValor(), arestaAtual.getPeso());
+            agm.addAresta(origem.getValor(), destino.getValor(), arestaAtual.getPeso());
             visitados.add(destino);
-            somaTotalPesos += arestaAtual.getPeso();
 
-            // Adiciona as arestas do vértice destino na fila de prioridade
-            for (Aresta<T> aresta : destino.getDestinos()) {
-                filaPrioridade.add(aresta);
+            // Adiciona as arestas do vértice destino na fila de prioridade e armazena a origem
+            for (Aresta<T> novaAresta : destino.getDestinos()) {
+                if (!visitados.contains(novaAresta.getDestino())) {
+                    filaPrioridade.add(novaAresta);
+                    origemMap.put(novaAresta.getDestino(), destino);
+                }
             }
         }
-
-        // Exibir resultado
-        System.out.println("Arestas da Árvore Geradora Mínima:");
-        for (Vertice<T> vertice : agm.getVertices()) {
-            for (Aresta<T> aresta : vertice.getDestinos()) {
-                System.out.println(vertice.getValor().toString() + " - " + aresta.getDestino().getValor().toString() + " : " + aresta.getPeso());
-            }
-        }
-        System.out.println("Soma total dos pesos: " + somaTotalPesos);
 
         return agm;
     }
