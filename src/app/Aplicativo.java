@@ -165,11 +165,9 @@ public class Aplicativo {
                     //Se há um caminho
                     if(distancia != 0.0){
 
-                        String nomeCidadeOrigem = cidade.toString();
-                        String nomeCidadeDestino = this.cidades.getVertices().get(i).toString();
+                        Cidade cidadeOrigem = cidade.getValor();
+                        Cidade cidadeDestino = this.cidades.getVertices().get(i).getValor();
 
-                        Cidade cidadeOrigem = cidades.findVertice(new Cidade(nomeCidadeOrigem)).getValor();
-                        Cidade cidadeDestino = cidades.findVertice(new Cidade(nomeCidadeDestino)).getValor();
                         AcrescentarRota(cidadeOrigem, cidadeDestino, distancia);
                     }
                 }
@@ -177,7 +175,6 @@ public class Aplicativo {
 
 
         } catch (FileNotFoundException e) {
-            // Caso contrário, vai ler do teclado.
             System.out.println("Não existe um arquivo de entrada.txt");
         }
     }
